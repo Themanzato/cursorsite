@@ -1,0 +1,438 @@
+:root {
+    --glitch-color1: #ff00ff;
+    --glitch-color2: #00ffff;
+}
+
+body {
+    background-color: #000;
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    overflow: hidden;
+}
+
+.glitch-effect {
+    position: relative;
+}
+
+.static-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(0,0,0,0.1),
+        rgba(0,0,0,0.2)
+    );
+    opacity: 0.1;
+    pointer-events: none;
+    animation: staticNoise 0.2s infinite;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.glitch {
+    position: relative;
+    font-size: 4em;
+    font-weight: bold;
+    text-shadow: 0.05em 0 0 var(--glitch-color1),
+                -0.05em -0.025em 0 var(--glitch-color2);
+    animation: glitch 1s infinite;
+}
+
+.terminal-text {
+    font-size: 1.2em;
+    line-height: 1.5;
+    margin: 20px 0;
+}
+
+.hidden-content {
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.hidden-content:hover {
+    opacity: 1;
+}
+
+.terminal-input input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #0f0;
+    color: #0f0;
+    padding: 10px;
+    font-family: inherit;
+}
+
+@keyframes glitch {
+    0% {
+        text-shadow: 0.05em 0 0 var(--glitch-color1),
+                    -0.05em -0.025em 0 var(--glitch-color2);
+    }
+    25% {
+        text-shadow: -0.05em -0.025em 0 var(--glitch-color1),
+                    0.025em 0.025em 0 var(--glitch-color2);
+    }
+    50% {
+        text-shadow: 0.025em 0.025em 0 var(--glitch-color1),
+                    -0.05em -0.025em 0 var(--glitch-color2);
+    }
+    100% {
+        text-shadow: -0.025em 0 0 var(--glitch-color1),
+                    -0.025em -0.025em 0 var(--glitch-color2);
+    }
+}
+
+@keyframes staticNoise {
+    0% { transform: translate(0,0) }
+    10% { transform: translate(-5%,-5%) }
+    20% { transform: translate(10%,5%) }
+    30% { transform: translate(-5%,2%) }
+    40% { transform: translate(5%,-5%) }
+    50% { transform: translate(-5%,5%) }
+    60% { transform: translate(5%,5%) }
+    70% { transform: translate(2%,-5%) }
+    80% { transform: translate(-5%,5%) }
+    90% { transform: translate(5%,-5%) }
+    100% { transform: translate(0,0) }
+}
+
+.secret-terminal {
+    background: rgba(0,0,0,0.9);
+    padding: 2em;
+    border: 2px solid var(--glitch-color1);
+    animation: terminalGlitch 0.3s infinite;
+}
+
+.access-granted {
+    color: #0f0;
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+.secret-content {
+    font-family: 'Courier New', monospace;
+    color: #0f0;
+}
+
+.message-box {
+    border: 1px solid #0f0;
+    padding: 1em;
+    margin: 1em 0;
+}
+
+.hidden-link {
+    margin-top: 2em;
+    text-align: center;
+}
+
+.glitch-link {
+    color: var(--glitch-color1);
+    text-decoration: none;
+    font-size: 1.2em;
+    position: relative;
+    display: inline-block;
+}
+
+.glitch-link:hover {
+    animation: glitch 0.3s infinite;
+}
+
+@keyframes terminalGlitch {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.02) skew(2deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.static-overlay[data-pattern]::before {
+    content: attr(data-pattern);
+    position: absolute;
+    color: var(--glitch-color1);
+    font-family: monospace;
+    font-size: 2em;
+    opacity: 0.7;
+    animation: fadeInOut 0.5s;
+}
+
+.hidden-message {
+    position: absolute;
+    font-family: 'Courier New', monospace;
+    color: var(--glitch-color2);
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.7; }
+}
+
+.glitch-text {
+    position: fixed;
+    color: var(--glitch-color1);
+    font-size: 3em;
+    opacity: 0;
+    animation: glitchReveal 1s;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.hint-text {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--glitch-color2);
+    font-size: 1.2em;
+    text-align: center;
+    animation: fadeInOut 3s;
+}
+
+.success-pattern {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #0f0;
+    font-size: 5em;
+    animation: successReveal 0.5s;
+}
+
+@keyframes glitchReveal {
+    0% { opacity: 0; transform: translate(random(100), random(100)); }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; transform: translate(random(-100), random(-100)); }
+}
+
+@keyframes successReveal {
+    0% { transform: translate(-50%, -50%) scale(0); }
+    50% { transform: translate(-50%, -50%) scale(2); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+.glitch-screen {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background-color: #000;
+    overflow: hidden;
+}
+
+.glitch-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0,255,0,0.15) 0px,
+        rgba(0,255,0,0.15) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    animation: glitchLines 0.3s infinite;
+}
+
+@keyframes glitchLines {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(2px); }
+}
+
+.intense-glitch {
+    animation: intenseGlitch 0.2s infinite;
+}
+
+@keyframes intenseGlitch {
+    0% {
+        transform: translate(0);
+        filter: hue-rotate(0deg);
+    }
+    25% {
+        transform: translate(-10px, 5px);
+        filter: hue-rotate(90deg);
+    }
+    50% {
+        transform: translate(5px, -5px);
+        filter: hue-rotate(180deg);
+    }
+    75% {
+        transform: translate(-5px, 10px);
+        filter: hue-rotate(270deg);
+    }
+    100% {
+        transform: translate(0);
+        filter: hue-rotate(360deg);
+    }
+}
+
+.hacker-console-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 255, 0, 0.2);
+    border: 2px solid #0f0;
+    color: #0f0;
+    padding: 10px 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 1.2em;
+    z-index: 1000;
+    cursor: pointer;
+    animation: glitch 2s infinite;
+}
+
+.hacker-console {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 80%;
+    height: 70vh;
+    max-width: 800px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid #0f0;
+    transition: transform 0.3s;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+}
+
+.hacker-console.active {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.console-header {
+    background: rgba(0, 255, 0, 0.1);
+    padding: 15px;
+    border-bottom: 1px solid #0f0;
+}
+
+.console-title {
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+}
+
+.console-close {
+    background: none;
+    border: none;
+    color: #0f0;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.console-output {
+    padding: 20px;
+    font-size: 1.1em;
+    line-height: 1.4;
+}
+
+.console-input-wrap {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #0f0;
+    background: rgba(0, 0, 0, 0.8);
+    align-items: center;
+}
+
+.console-prompt {
+    color: #0f0;
+    margin-right: 10px;
+}
+
+.console-input {
+    flex: 1;
+    margin-right: 10px;
+    background: transparent;
+    border: none;
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+}
+
+.console-line {
+    position: relative;
+    padding-left: 20px;
+}
+
+.console-line::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--glitch-color1);
+}
+
+.console-line.command {
+    color: var(--glitch-color1);
+}
+
+.console-line.error {
+    color: #ff0000;
+}
+
+@media (max-width: 768px) {
+    .hacker-console {
+        width: 100%;
+        height: 80vh;
+        top: 100%;
+        left: 0;
+        transform: none;
+    }
+
+    .hacker-console.active {
+        transform: translateY(-100%);
+    }
+}
+
+.hacker-console::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        rgba(0, 255, 0, 0.1) 50%,
+        rgba(0, 0, 0, 0.1) 50%
+    );
+    background-size: 100% 2px;
+    pointer-events: none;
+    animation: scanline 10s linear infinite;
+}
+
+@keyframes scanline {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+}
+
+.console-send {
+    background: rgba(0, 255, 0, 0.2);
+    border: 1px solid #0f0;
+    color: #0f0;
+    padding: 5px 15px;
+    margin-left: 10px;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.console-send:hover {
+    background: rgba(0, 255, 0, 0.3);
+} 
